@@ -1,0 +1,31 @@
+﻿<h3>TimerClock</h3>
+
+<p>
+    <h1>@ShowTime</h1>
+    
+</p>
+
+@code {
+
+    Timer timer;
+    public TimerCallback timerCallback;
+
+    [Parameter] public string ShowTime { get; set; }
+
+    protected override Task OnInitializedAsync()
+    {
+        //ShowTime = DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss");
+        timerCallback = new TimerCallback(t =>
+        {
+            this.InvokeAsync(() =>
+            {
+                ShowTime = DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss");
+                this.StateHasChanged();
+            });
+        });
+
+        timer = new Timer(timerCallback, null, 0, 1000);
+
+        return base.OnInitializedAsync();
+    }
+}
